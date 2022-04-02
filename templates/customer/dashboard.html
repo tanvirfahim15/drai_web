@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      {% include "nav.html" %}
+   </head>
+   <body>
+      <div align="center">
+          <div class="container-fluid mt-5" style="width: 60%;">
+         <div class="row">
+            <div class="col" align="left">
+               <h3> Hello,{% if user['mode']=='doctor' %} Dr.{% endif %} {{ session['username'] }} </h3>
+            </div>
+            <div class="col" align="right">
+                {% if user['mode']=='doctor' %} <a class="btn btn-primary btn-sm" href="/prescribe/" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Create Prescription</a>{% endif %}
+                {% if user['mode']=='patient' %} <a class="btn btn-primary btn-sm" href="/personalized_info/{{ user['mobile'] }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Personalized Information</a>
+                <a class="btn btn-primary btn-sm" href="/uploads/{{user['mobile']}}" role="button"><i class="fa  fa-eye" aria-hidden="true"></i> Uploads</a>{% endif %}
+            <a class="btn btn-primary btn-sm" href="/upload/" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Upload Prescription</a>
+            </div>
+         </div></div>
+         <br/>
+         <form class="d-flex mt-2 mb-2" style="width: 60%;" action="" method="post">
+            <input id="searchtext" name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" value="{{search_text}}">
+            <button class="btn btn-primary" type="button" onclick="search()"><i class="fa fa-search" aria-hidden="true" ></i></button>
+            <br>
+         </form>
+         {% if prescriptions|length>0 %}
+          <div style="width:60%" id="lists">
+          {% for p in range(pres|length) %}
+                    {% if p==0 %}
+                    <div id="pres{{p}}" style="display:block;">
+                  {% else %}
+                    <div id="pres{{p}}" style="display:none;">
+
+                  {% endif %}
+            {% for obj in pres[p] %}
+                    <a href="/prescription/{{ obj['prescriptionid'] }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Patient Name: {{ obj['name'] }}</h5>
+                            <small class="text-muted">ID: {{ obj['prescriptionid'] }}</small>
+                        </div>
+                        <div align="left" style="width: 100%;">
+                            <p class="mb-1">Issued Date: {{ obj['date'] }}</p>
+                            <p class="mb-1">Mobile: {{ obj['mobile'] }}</p>
+                            <p class="mb-1">Doctor: {{ obj['doctor'] }}</p>
+                        </div>
+
+                    </a>
+          {% endfor %}</div>
+          {% endfor %}</div><br/><br/><br/>
+              <div class="btn-group" role="group" aria-label="Basic example">
+        {% for p in range(pres|length) %}
+        <button type="button" class="btn btn-secondary" onclick="selected({{ p }})">{{ p+1 }}</button>
+        {% endfor %}
+        </div>
+         {% else %}
+         <br/>
+         <br/>
+         <br/>
+         <span style="font-size: xx-large;color: #cccccc;font-weight: bolder">No prescriptions was found</span>
+         <br/>
+         <br/>
+         <br/>
+         {% endif %}
+      </div>
+      <footer> {% include "footer.html" %}</footer>
+   </body>
+
+    <script>
+
+    function selected(id){
+{% for p in range(pres|length) %}
+
+        document.getElementById('pres{{p}}').style.display = "none";
+
+
+{% endfor %}
+
+         document.getElementById('pres'+id.toString()).style.display = "block";
+
+    }
+</script>
+</html>
+

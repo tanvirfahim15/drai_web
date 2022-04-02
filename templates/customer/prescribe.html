@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html>
+<head>
+   {% include "nav.html" %}
+
+</head>
+<body  onload="updateUI();" >
+<div class="container mt-4 mb-4">
+   <!--header starts-->
+   <form action="/prescribe/" method="POST" autocomplete="off" id="form">
+      <input type="checkbox" name="send_email" id="send_email" hidden>
+      <input type="checkbox" name="print" id="print" hidden>
+      <section class="patient-section mb-2 pb-2 pt-2 shadow" style="background-color: rgb(243, 242, 245) " >
+         <div class="row" >
+            <div class="col-sm-4" style="margin-left: 4%;">
+               <div class="form-group mb-2">
+                  <input type="text" name="name" id="name" class="form-control" placeholder="Enter name*" required>
+               </div>
+
+               <div class="form-group mb-3">
+                  <input type="date" name="date" id="date" class="form-control" value="{{ cur_date }}">
+               </div>
+               <div class="form-group">
+                  Sex
+                  <div class="form-check-inline">
+                     <label class="form-check-label">
+                        <input type="checkbox" checked class="form-check-input" name="male" id="male" onclick='document.getElementById("female").checked = false;document.getElementById("other").checked = false;'>Male
+                     </label>
+                  </div>
+                  <div class="form-check-inline">
+                     <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="female" id="female" onclick='document.getElementById("male").checked = false;document.getElementById("other").checked = false;'>Female
+                     </label>
+                  </div>
+                  <div class="form-check-inline">
+                     <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="other" id="other" onclick='document.getElementById("female").checked = false;document.getElementById("male").checked = false;'>Other
+                     </label>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-4">
+               <div class="form-group mb-2">
+                  <input type="number" name="mobile" id="mobile" onkeyup='updateHistory()' class="form-control" placeholder="Enter mobile no*" required>
+               </div>
+               <div class="form-group mb-2">
+                  <input name="email" type="email" class="form-control" id="email" placeholder="Enter email">
+               </div>
+
+            </div>
+
+            <div class="col-sm-3" style="margin-right:4%;">
+
+               <div class="form-group mb-2">
+                  <input type="number" name="age" id="age" class="form-control" placeholder="Enter age*" required>
+               </div>
+               <div class="form-group mb-2">
+                  <input type="text" name="address" id="address" class="form-control" placeholder="Enter address">
+               </div>
+               <div align="right" class="mt-3">
+                  <a title="Save"><button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ><i class="fa fa-floppy-o" aria-hidden="true"></i> </button></a>
+                     <div class="modal fade"  style="margin-top:350px" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                           </div>
+                           <div class="modal-body">
+                              <center>
+                                 <h4>Do you want to save the prescription?</h4>
+                                 <button class="btn btn-success" type="submit">Yes</button>
+                              </center>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+
+                  <a title="Save and email"><button type="submit" class="btn btn-secondary btn-sm" onclick='document.getElementById("send_email").checked = true;'><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+                  </a>
+                  <a title="Save and print">
+                  <button type="submit" class="btn btn-secondary btn-sm" onclick='document.getElementById("print").checked = true;'><i class="fa fa-print" aria-hidden="true"></i> </button>
+                  </a>
+               </div>
+
+
+            </div>
+         </div>
+      </section>
+
+      <div class="row border shadow pt-3 pb-3" style="background-color: mintcream;">
+         <div class="col-sm-4 pt-2" style="max-height:655px;overflow-y: scroll">
+            <div class="form-group mb-4">
+               <div id='dxs'>
+                  <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Disease/Condition/Dx</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                           <button type="button" class="btn btn-success btn-sm"  onclick="addDx()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="outerdx0" style="width: 100%;max-height:115px;overflow-y: scroll">
+                  </div>
+               </div>
+            </div>
+            <div class="form-group mb-4">
+               <div id='ccs'>
+                  <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>CC</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                           <button type="button" class="btn btn-success btn-sm"  onclick="addCc()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="outercc0" style="width: 100%;max-height:115px;overflow-y: scroll">
+
+                  </div>
+               </div>
+            </div>
+            <div class="form-group mb-4">
+               <div id='Ixs'>
+                  <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>IX</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                           <button type="button" class="btn btn-success btn-sm"  onclick="addIx()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="outerix0" style="width: 100%;max-height:115px;overflow-y: scroll">
+
+                  </div>
+               </div>
+            </div>
+            <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>O/E</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                        </div>
+                     </div>
+            </div>
+            <div class="row" align="center">
+                  <div class="col">
+                     <div class="form-group">
+                        <a title="BP"><input class="form-control" type="text" name="bp" id="bp" placeholder="BP"></a>
+                     </div>
+
+                  </div>
+                  <div class="col">
+
+                     <div class="form-group">
+                        <a title="Pulse"><input class="form-control" type="text" name="pulse" id="pulse" placeholder="Pulse"></a>
+                     </div>
+                  </div>
+                  <div class="col">
+
+                     <div class="form-group">
+                        <a title="Temp"><input class="form-control" type="text" name="temp" id="temp" placeholder="Temp"></a>
+                     </div>
+                  </div>
+               </div>
+            <div class="row">
+               <div class="col">
+                  <div class="form-group">
+                     <a title="Heart"><input class="form-control" type="text" name="heart" id="heart" placeholder="Heart"></a>
+                  </div>
+               </div>
+               <div class="col">
+                  <div class="form-group">
+                     <a title="Weight"><input class="form-control" type="text" name="weight" id="weight" placeholder="Weight"></a>
+                  </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                     <a title="Sugar"><input class="form-control" type="text" name="sugar" id="sugar" placeholder="Sugar"></a>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+
+                  <div class="form-group">
+                     <a title="Lungs"><input class="form-control" type="text" name="lungs" id="lungs" placeholder="Lungs"></a>
+                  </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                     <a title="Abd"><input class="form-control" type="text" name="abd" id="abd" placeholder="Abd"></a>
+                  </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                     <a title="Anemia"><input class="form-control" type="text" name="anemia" id="anemia" placeholder="Anemia"></a>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+
+                  <div class="form-group">
+                     <a title="Jaundice"><input class="form-control" type="text" name="jaundice" id="jaundice" placeholder="Jaundice"></a>
+                  </div>
+               </div>
+               <div class="col">
+
+
+                  <div class="form-group">
+                     <a title="Cyanosis"><input class="form-control" type="text" name="cyanosis" id="cyanosis" placeholder="Cyanosis"></a>
+                  </div>
+               </div>
+               <div class="col">
+
+
+                  <div class="form-group">
+                     <a title="Odemea"><input class="form-control" type="text" name="odemea" id="odemea" placeholder="Odemea"></a>
+                  </div>
+               </div>
+            </div>
+
+            <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Advice</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                        </div>
+                     </div>
+            </div>
+            <div class="row">
+               <div class="col">
+               <textarea cols="42" name="advice"></textarea></div>
+            </div>
+
+         </div>
+         <div class="col-sm-4 pt-2 mb-2 shadow border rounded" style="background-color: rgb(235, 250, 252);">
+            <div class="form-group mb-4">
+               <div id='Rxs'>
+                  <div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>RX</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                           <button type="button" class="btn btn-success btn-sm"  onclick="addRx(0)"><span style="font-size:25%;visibility:hidden" ><i class="fa fa-plus" aria-hidden="true"></i></span><i class="fa fa-plus" aria-hidden="true"></i><span style="font-size:25%;visibility:hidden" ><i class="fa fa-plus" aria-hidden="true"></i></span></button>
+                           <button type="button" class="btn btn-success btn-sm"  onclick="addRx(1)"><i class="fa fa-font" aria-hidden="true"></i><span style="font-size:50%"><i class="fa fa-plus" aria-hidden="true"></i></span> </button>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="outerrx0" style="width: 100%;max-height:585px;overflow-y: scroll">
+
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4 pt-2" >
+            <div align='center' style="width: 100%;">
+               <h4 class="btn btn-dark" style="width: 100%; cursor: default !important;">Suggestions</h4>
+            </div>
+            <div  align="center" class="pb-2">
+              <button type="button" id="rxsugbutton" class="btn btn-secondary btn-sm disabled" style="width: 22%;" onclick="rxsuggest()">RX</button>
+              <button type="button" id="dxsugbutton" class="btn btn-secondary btn-sm" style="width: 22%;" onclick="dxsuggest()">DX</button>
+              <button type="button" id="ixsugbutton" class="btn btn-secondary btn-sm" style="width: 22%;" onclick="ixsuggest()">IX</button>
+              <button type="button" id="ccsugbutton" class="btn btn-secondary btn-sm" style="width: 22%;" onclick="ccsuggest()">CC</button>
+            </div>
+            <div class="card" id="rxsuggestions" style="width: 100%">
+               <ul class="list-group"  style="max-height:400px;overflow-y: scroll">
+                  {% for i in range(100) %}
+                  <li class="list-group-item list-group-item-action"  data-toggle="tooltip" data-placement="top" title="" style=" cursor: pointer;display:none" id="rxsuggestion{{ i+1 }}" > &nbsp; </li>
+                  {% endfor %}
+               </ul>
+            </div>
+            <div class="card" id="ixsuggestions" style="width: 100%;display:none">
+               <ul class="list-group"  style="max-height:400px;overflow-y: scroll">
+                  {% for i in range(100) %}
+                  <li class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="top" title="" style=" cursor: pointer;display:none" id="ixsuggestion{{ i+1 }}" > &nbsp; </li>
+                  {% endfor %}
+               </ul>
+            </div>
+            <div class="card" id="dxsuggestions" style="width: 100%;display:none">
+               <ul class="list-group"  style="max-height:400px;overflow-y: scroll">
+                  {% for i in range(100) %}
+                  <li class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="top" title="" style=" cursor: pointer;display:none" id="dxsuggestion{{ i+1 }}" > &nbsp; </li>
+                  {% endfor %}
+               </ul>
+            </div>
+            <div class="card" id="ccsuggestions" style="width: 100%;display:none">
+               <ul class="list-group"  style="max-height:400px;overflow-y: scroll">
+                  {% for i in range(100) %}
+                  <li class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="top" title="" style=" cursor: pointer;display:none" id="ccsuggestion{{ i+1 }}" > &nbsp; </li>
+                  {% endfor %}
+               </ul>
+            </div>
+            <br/>
+            <span id="bnm" style="display:none"><h4 class="btn btn-dark" style="width: 100%; cursor: default !important;">Brand Name</h4></span>
+            <ul class="list-group"  style="max-height:400px;overflow-y: scroll">
+
+                  {% for i in range(100) %}
+                  <li class="list-group-item list-group-item-action"  data-toggle="tooltip" data-placement="top" title="" style=" cursor: pointer;display:none" id="rxsuggestionBN{{ i+1 }}" >  </li>
+                  {% endfor %}
+               </ul>
+
+            <div class="mt-3">
+
+               <div id="more">
+
+                  <div id="drop" >
+
+
+                     <div class="form-group" id="history">
+                        <a href="#" onclick='alert("Enter Mobile no first")'>Drug History</a>
+                     </div>
+                     <div class="form-group" id="p_info">
+                        <a href="#" onclick='alert("Enter Mobile no first")'>Personalized Information</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </form>
+</div>
+</body>
+</html>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+function rxsuggest(){
+   document.getElementById("rxsugbutton").className = "btn btn-secondary btn-sm disabled";
+   document.getElementById("dxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ixsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ccsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById('rxsuggestions').style.display = "block";
+   document.getElementById('dxsuggestions').style.display = "none";
+   document.getElementById('ixsuggestions').style.display = "none";
+   document.getElementById('ccsuggestions').style.display = "none";
+
+}
+function dxsuggest(){
+   document.getElementById("rxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("dxsugbutton").className = "btn btn-secondary btn-sm disabled";
+   document.getElementById("ixsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ccsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById('rxsuggestions').style.display = "none";
+   document.getElementById('dxsuggestions').style.display = "block";
+   document.getElementById('ixsuggestions').style.display = "none";
+   document.getElementById('ccsuggestions').style.display = "none";
+   document.getElementById('bnm').style.display = "none";
+   {% for i in range(100) %}
+   document.getElementById('rxsuggestionBN{{ i+1 }}').style.display = "none";
+   {% endfor %}
+
+}
+function ccsuggest(){
+   document.getElementById("rxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("dxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ixsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ccsugbutton").className = "btn btn-secondary btn-sm disabled";
+   document.getElementById('rxsuggestions').style.display = "none";
+   document.getElementById('dxsuggestions').style.display = "none";
+   document.getElementById('ixsuggestions').style.display = "none";
+   document.getElementById('ccsuggestions').style.display = "block";
+   document.getElementById('bnm').style.display = "none";
+   {% for i in range(100) %}
+   document.getElementById('rxsuggestionBN{{ i+1 }}').style.display = "none";
+   {% endfor %}
+
+}
+function ixsuggest(){
+   document.getElementById("rxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("dxsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById("ixsugbutton").className = "btn btn-secondary btn-sm disabled";
+   document.getElementById("ccsugbutton").className = "btn btn-secondary btn-sm";
+   document.getElementById('rxsuggestions').style.display = "none";
+   document.getElementById('dxsuggestions').style.display = "none";
+   document.getElementById('ixsuggestions').style.display = "block";
+   document.getElementById('ccsuggestions').style.display = "none";
+   document.getElementById('bnm').style.display = "none";
+   {% for i in range(100) %}
+   document.getElementById('rxsuggestionBN{{ i+1 }}').style.display = "none";
+   {% endfor %}
+
+}
+var dxs = [""];
+var dxsug= '';
+
+function dxstr(ind, val) {
+    str = '<div style="display: inline-block;width: 89%;"><input class="form-control" onkeyup="updateDX(' + ind.toString() + ')" id="dx' + ind.toString() + '" name="dx' + ind.toString() + '" list="datalistdx' + ind.toString() + '" value="' + val + '"><datalist id="datalistdx' + ind.toString() + '">'+dxsug+'</datalist></div><div style="display: inline-block;"><button type="button" class="btn btn-danger btn-sm" onclick="removeDx(' + ind.toString() + ')"><i class="fa fa-trash" aria-hidden="true"></i></button></div>';
+
+    return str;
+}
+
+function updateDX(ind) {
+    dxs[ind] = document.getElementById("dx" + ind.toString()).value;
+    suggest();
+}
+
+
+function addDx() {
+    dxs.push("");
+    updateUI();
+}
+
+function removeDx(ind) {
+    var new_d = [];
+    for (let i = 0; i < dxs.length; i++) {
+        if (i != ind) {
+            new_d.push(dxs[i]);
+        }
+    }
+    dxs = new_d;
+    updateUI();
+}
+
+
+var ccs = [""];
+var ccsug = '';
+
+function ccstr(ind, val) {
+    str = '<div style="display: inline-block;width: 89%;"><input class="form-control" onkeyup="updatecc(' + ind.toString() + ')"  id="cc' + ind.toString() + '" name="cc' + ind.toString() + '" list="datalistcc' + ind.toString() + '" value="' + val + '"><datalist id="datalistcc' + ind.toString() + '">'+ccsug+'</datalist></div><div style="display: inline-block;"><button type="button" class="btn btn-danger btn-sm" onclick="removecc(' + ind.toString() + ')"><i class="fa fa-trash" aria-hidden="true"></i></button></div>';
+    return str;
+}
+
+function updatecc(ind) {
+    ccs[ind] = document.getElementById("cc" + ind.toString()).value;
+    suggest();
+}
+
+function addCc() {
+    ccs.push("");
+    updateUI();
+}
+
+function removecc(ind) {
+    var new_d = [];
+    for (let i = 0; i < ccs.length; i++) {
+        if (i != ind) {
+            new_d.push(ccs[i]);
+        }
+    }
+    ccs = new_d;
+    updateUI();
+}
+
+
+var ixs = [""];
+var ixsug = '';
+
+function ixstr(ind, val) {
+    str = '<div style="display: inline-block;width: 89%;"><input class="form-control" onkeyup="updateix(' + ind.toString() + ')" id="ix' + ind.toString() + '" name="ix' + ind.toString() + '" list="datalistix' + ind.toString() + '" value="' + val + '"><datalist id="datalistix' + ind.toString() + '">'+ixsug+'</datalist></div><div style="display: inline-block;"><button type="button" class="btn btn-danger btn-sm" onclick="removeix(' + ind.toString() + ')"><i class="fa fa-trash" aria-hidden="true"></i></button></div>';
+    return str;
+}
+
+function updateix(ind) {
+    ixs[ind] = document.getElementById("ix" + ind.toString()).value;
+    suggest();
+}
+
+
+
+function addIx() {
+    ixs.push("");
+    updateUI();
+}
+
+function removeix(ind) {
+    var new_d = [];
+    for (let i = 0; i < ixs.length; i++) {
+        if (i != ind) {
+            new_d.push(ixs[i]);
+        }
+    }
+    ixs = new_d;
+    updateUI();
+}
+
+var rxmodes = [0];
+var rxs = [""];
+var doses = [""];
+var duration = [""];
+var before = ["checked"];
+var after = [""];
+var dm = ["Days"];
+var rxsug = '';
+var dosesug = '<option value="0+0+1"><option value="0+1+0"><option value="0+1+1"><option value="1+0+0"><option value="1+0+1"><option value="1+1+0"><option value="1+1+1">';
+
+function rxstr(ind, val) {
+
+     bg = "#EFE";
+     if(ind%2==0){
+      bg= "#EEF";
+     }
+     if(rxmodes[ind]==1){
+          var dmstr = '<label class="form-check-label"><input type="checkbox" checked id="daycheck' + ind.toString() + '" onclick="daycheckpress(' + ind.toString() + ')" hidden>  </label></td><td class="pt-2"><label class="form-check-label"> <input type="checkbox" id="moncheck' + ind.toString() + '" onclick="monthcheckpress(' + ind.toString() + ')" hidden></label>';
+          if (dm[ind]!='Days'){
+            dmstr = '<label class="form-check-label"><input type="checkbox" id="daycheck' + ind.toString() + '" onclick="daycheckpress(' + ind.toString() + ')" hidden> </label></td><td class="pt-2"><label class="form-check-label"> <input type="checkbox"  checked id="moncheck' + ind.toString() + '" onclick="monthcheckpress(' + ind.toString() + ')" hidden> </label>';
+
+          }
+          str = '<div style="background:'+bg+'" class="pt-2 pl-2 pr-2"><input placeholder="Rx" class="form-control" onkeyup="updaterx(' + ind.toString() + ')" id="rx' + ind.toString() + '" name="rx' + ind.toString() + '" list="datalistrx' + ind.toString() + '" value="' + val + '"><datalist id="datalistrx' + ind.toString() + '">'+rxsug+dxsug+ixsug+ccsug+'</datalist><input  onkeyup="updaterx(' + ind.toString() + ')"  placeholder="Advice" class="form-control mb-1 mt-1" id="duration' + ind.toString() + '" name="duration' + ind.toString() +'" value="' + duration[ind] + '">'+dmstr+'<input  onkeyup="updaterx(' + ind.toString() + ')"  placeholder="Dose" class="form-control" id="dose' + ind.toString() + '" name="dose' + ind.toString() + '" list="datalistdose' + ind.toString() + '" value="' + doses[ind] + '" hidden><datalist id="datalistdose' + ind.toString() + '">'+dosesug+'</datalist><label class="form-check-label"><input type="checkbox" id="before' + ind.toString() + '" name="before' + ind.toString() + '" class=""  value="checked " onclick="updaterxafter(' + ind.toString() + ');updaterx(' + ind.toString() + ')" '+before[ind]+' hidden> </label><label class="form-check-label"> <input type="checkbox" id="after' + ind.toString() + '" name="after' + ind.toString() + '" class="" value="checked" onclick="updaterxbefore(' + ind.toString() + ');updaterx(' + ind.toString() + ')" '+after[ind]+' hidden> </label><button type="button" style="width:100%" class="btn btn-danger btn-sm mt-1" onclick="removerx(' + ind.toString() + ')"><i class="fa fa-trash" aria-hidden="true"></i></button><hr/></div>';
+          var sel = '<input value="Days" type="text" name="dm'+ind.toString()+'" id="dm'+ind.toString()+'"/ hidden><input value="'+rxmodes[ind]+'" type="text" name="rxmode'+ind.toString()+'" id="rxmode'+ind.toString()+'"/ hidden>'
+
+          return str+sel;
+
+
+     }
+
+     var dmstr = '<label class="form-check-label"><input type="checkbox" checked id="daycheck' + ind.toString() + '" onclick="daycheckpress(' + ind.toString() + ')" > Days </label></td><td class="pt-2"><label class="form-check-label"> <input type="checkbox" id="moncheck' + ind.toString() + '" onclick="monthcheckpress(' + ind.toString() + ')" > Months </label>';
+    if (dm[ind]!='Days'){
+      dmstr = '<label class="form-check-label"><input type="checkbox" id="daycheck' + ind.toString() + '" onclick="daycheckpress(' + ind.toString() + ')" > Days </label></td><td class="pt-2"><label class="form-check-label"> <input type="checkbox"  checked id="moncheck' + ind.toString() + '" onclick="monthcheckpress(' + ind.toString() + ')" > Months </label>';
+
+    }
+    str = '<div style="background:'+bg+'" class="pt-2 pl-2 pr-2"><input placeholder="Brand Name" class="form-control" onkeyup="updaterx(' + ind.toString() + ')" id="rx' + ind.toString() + '" name="rx' + ind.toString() + '" list="datalistrx' + ind.toString() + '" value="' + val + '"><datalist id="datalistrx' + ind.toString() + '">'+rxsug+'</datalist><table><tr><td width="40%"><input  onkeyup="updaterx(' + ind.toString() + ')"  placeholder="Duration" class="form-control mb-1 mt-1" id="duration' + ind.toString() + '" name="duration' + ind.toString() +'" value="' + duration[ind] + '"></td><td class="pt-2 pl-2">'+dmstr+'</td></tr></table><table><tr><td width="40%"><input  onkeyup="updaterx(' + ind.toString() + ')"  placeholder="Dose" class="form-control" id="dose' + ind.toString() + '" name="dose' + ind.toString() + '" list="datalistdose' + ind.toString() + '" value="' + doses[ind] + '"><datalist id="datalistdose' + ind.toString() + '">'+dosesug+'</datalist></td><td class="pl-2">খাওয়ার <label class="form-check-label"><input type="checkbox" id="before' + ind.toString() + '" name="before' + ind.toString() + '" class=""  value="checked " onclick="updaterxafter(' + ind.toString() + ');updaterx(' + ind.toString() + ')" '+before[ind]+'> আগে </label><label class="form-check-label"> <input type="checkbox" id="after' + ind.toString() + '" name="after' + ind.toString() + '" class="" value="checked" onclick="updaterxbefore(' + ind.toString() + ');updaterx(' + ind.toString() + ')" '+after[ind]+'> পরে </label></td></tr></table><button type="button" style="width:100%" class="btn btn-danger btn-sm mt-1" onclick="removerx(' + ind.toString() + ')"><i class="fa fa-trash" aria-hidden="true"></i></button><hr/></div>';
+    var sel = '<input value="Days" type="text" name="dm'+ind.toString()+'" id="dm'+ind.toString()+'"/ hidden><input value="'+rxmodes[ind]+'" type="text" name="rxmode'+ind.toString()+'" id="rxmode'+ind.toString()+'"/ hidden>'
+
+    return str+sel;
+
+}
+
+function daycheckpress(ind){
+dm[ind] = "Days";
+document.getElementById("moncheck"+ind.toString()).checked = false;
+document.getElementById("dm"+ind.toString()).value = "Days";
+}
+function monthcheckpress(ind){
+dm[ind] = "Months";
+document.getElementById("daycheck"+ind.toString()).checked = false;
+document.getElementById("dm"+ind.toString()).value = "Months";
+}
+
+
+function updaterxafter(ind){
+document.getElementById("after" + ind.toString()).checked = false;
+}
+function updaterxbefore(ind){
+document.getElementById("before" + ind.toString()).checked = false;
+}
+
+function updaterx(ind) {
+    dm[ind] = document.getElementById("dm" + ind.toString()).value;
+    rxs[ind] = document.getElementById("rx" + ind.toString()).value;
+    doses[ind] = document.getElementById("dose" + ind.toString()).value;
+    duration[ind] = document.getElementById("duration" + ind.toString()).value;
+    if (document.getElementById("before" + ind.toString()).checked){
+        before[ind] = "checked";
+
+    }
+    else{
+        before[ind] = "";
+    }
+
+    if (document.getElementById("after" + ind.toString()).checked){
+        after[ind] = "checked";
+    }
+    else{
+        after[ind] = "";
+    }
+    suggest();
+}
+
+function addRx(mode) {
+    rxmodes.push(mode);
+    rxs.push("");
+    doses.push("");
+    duration.push("");
+    before.push("checked");
+    after.push("");
+    dm.push("Days");
+    updateUI();
+}
+
+function removerx(ind) {
+    var new_rxmodes = [];
+    var new_rxs = [];
+    var new_doses = [];
+    var new_duration = [];
+    var new_before = [];
+    var new_after = [];
+    var new_dm = [];
+    for (let i = 0; i < rxs.length; i++) {
+        if (i != ind) {
+            new_rxmodes.push(rxmodes[i]);
+            new_rxs.push(rxs[i]);
+            new_doses.push(doses[i]);
+            new_duration.push(duration[i]);
+            new_before.push(before[i]);
+            new_after.push(after[i]);
+            new_dm.push(dm[i]);
+        }
+    }
+    rxmodes = new_rxmodes;
+    rxs = new_rxs;
+    doses = new_doses;
+    duration = new_duration;
+    before = new_before;
+    after = new_after;
+    dm = new_dm;
+    updateUI();
+}
+
+
+
+function updateUI() {
+
+    dx_str = "";
+    for (let i = 0; i < dxs.length; i++) {
+        dx_str += dxstr(i, dxs[i]);
+    }
+
+    document.getElementById("outerdx0").innerHTML = dx_str;
+    cc_str = "";
+    for (let i = 0; i < ccs.length; i++) {
+        cc_str += ccstr(i, ccs[i]);
+    }
+
+    document.getElementById("outercc0").innerHTML = cc_str;
+
+    ix_str = "";
+    for (let i = 0; i < ixs.length; i++) {
+        ix_str += ixstr(i, ixs[i]);
+    }
+    document.getElementById("outerix0").innerHTML = ix_str;
+
+    rx_str = "";
+    for (let i = 0; i < rxs.length; i++) {
+        rx_str += rxstr(i, rxs[i]);
+    }
+    document.getElementById("outerrx0").innerHTML = rx_str;
+    suggest();
+}
+
+function collapse() {
+    document.getElementById('colpbutton').innerHTML = '<button id="colp" class="btn btn-danger" type="button" onclick="goBack()" style="width: 100%;"><i class="fa fa-chevron-up" aria-hidden="true"></i>'
+    document.getElementById('drop').style.display = "block";
+}
+
+function goBack() {
+    var str = '<div class="mt-2" align="center" id="colpbutton"><button id="colp" class="btn btn-primary" type="button" onclick="collapse()" style="width: 100%;"><i class="fa fa-chevron-down" aria-hidden="true"></i></button></div>';
+    document.getElementById('colpbutton').innerHTML = str;
+    document.getElementById('drop').style.display = "none";
+}
+
+function suggest() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      suggestions_ = JSON.parse(this.responseText);
+      dxsug = "";
+      ixsug = "";
+      rxsug = "";
+      ccsug = "";
+      for (let i = 0; i < 100; i++) {
+         document.getElementById('rxsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('ccsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('ixsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('dxsuggestion'+(i+1).toString()).style.display = "none";
+      }
+      for (let i = 0; i < suggestions_.length; i++) {
+         if (suggestions_[i][0].startsWith("DX-")){dxsug += '<option value="'+suggestions_[i][0].replace("DX-", "")+'">';
+         }
+         if (suggestions_[i][0].startsWith("RX-")){
+            rxsug += '<option value="'+suggestions_[i][0].replace("RX-", "")+'">';
+         }
+         if (suggestions_[i][0].startsWith("IX-")){
+            ixsug += '<option value="'+suggestions_[i][0].replace("IX-", "")+'">';
+         }
+         if (suggestions_[i][0].startsWith("CC-")){
+            ccsug += '<option value="'+suggestions_[i][0].replace("CC-", "")+'">';
+         }
+
+      }
+
+      for (let i = 0; i < dxs.length; i++) {
+       document.getElementById("datalistdx"+i.toString()).innerHTML = dxsug;
+      }
+      for (let i = 0; i < rxs.length; i++) {
+       document.getElementById("datalistrx"+i.toString()).innerHTML = rxsug;
+      }
+      for (let i = 0; i < ixs.length; i++) {
+       document.getElementById("datalistix"+i.toString()).innerHTML = ixsug;
+      }
+      for (let i = 0; i < ccs.length; i++) {
+       document.getElementById("datalistcc"+i.toString()).innerHTML = ccsug;
+      }
+
+
+
+      suggestML();
+
+    }
+  };
+  xhttp.open("POST", "/suggestions/", true);
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  var data = {};
+  data["rxs"] = rxs;
+  data["ccs"] = ccs;
+  data["ixs"] = ixs;
+  data["dxs"] = dxs;
+  data["contact"] = document.getElementById("mobile").value;
+  xhttp.send(JSON.stringify(data));
+}
+
+
+
+
+function suggestML() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      suggestions_ = JSON.parse(this.responseText);
+      dxsug = "";
+      ixsug = "";
+      rxsug = "";
+      ccsug = "";
+      for (let i = 0; i < 100; i++) {
+         document.getElementById('rxsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('ccsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('ixsuggestion'+(i+1).toString()).style.display = "none";
+         document.getElementById('dxsuggestion'+(i+1).toString()).style.display = "none";
+      }
+      var rxc = 0;
+      var ccc = 0;
+      var dxc = 0;
+      var ixc = 0;
+      for (let i = 0; i < suggestions_.length; i++) {
+         if (suggestions_[i][0].startsWith("DX-")){
+            document.getElementById('dxsuggestion'+(dxc+1).toString()).innerHTML = suggestions_[i][0].replace("DX-", "");
+            document.getElementById('dxsuggestion'+(dxc+1).toString()).style.display = "block";
+            document.getElementById('dxsuggestion'+(dxc+1).toString()).title = suggestions_[i][2];
+            document.getElementById('dxsuggestion'+(dxc+1).toString()).onclick = function() {add_suggestion(suggestions_[i][0])}
+            dxc = dxc + 1;
+         }
+         if (suggestions_[i][0].startsWith("RX-")){
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).innerHTML = suggestions_[i][0].replace("RX-", "");
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).style.display = "block";
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).title = suggestions_[i][3];
+            if(suggestions_[i][1]=="A"){
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).style.color = "red";
+            }
+            if(suggestions_[i][1]=="B"){
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).style.color = "red";
+            }
+            document.getElementById('rxsuggestion'+(rxc+1).toString()).onclick = function() {showRX_brands(suggestions_[i])}
+            rxc = rxc + 1;
+         }
+         if (suggestions_[i][0].startsWith("IX-")){
+            document.getElementById('ixsuggestion'+(ixc+1).toString()).innerHTML = suggestions_[i][0].replace("IX-", "");
+            document.getElementById('ixsuggestion'+(ixc+1).toString()).style.display = "block";
+            document.getElementById('ixsuggestion'+(ixc+1).toString()).title = suggestions_[i][1];
+            document.getElementById('ixsuggestion'+(ixc+1).toString()).style.color = suggestions_[i][2];
+            document.getElementById('ixsuggestion'+(ixc+1).toString()).onclick = function() {add_suggestion(suggestions_[i][0])}
+            ixc = ixc + 1;
+         }
+         if (suggestions_[i][0].startsWith("CC-")){
+            document.getElementById('ccsuggestion'+(ccc+1).toString()).innerHTML = suggestions_[i][0].replace("CC-", "");
+            document.getElementById('ccsuggestion'+(ccc+1).toString()).style.display = "block";
+            document.getElementById('ccsuggestion'+(ccc+1).toString()).title = suggestions_[i][2];
+            document.getElementById('ccsuggestion'+(ccc+1).toString()).onclick = function() {add_suggestion(suggestions_[i][0])}
+            ccc = ccc + 1;
+         }
+
+      }
+
+    }
+  };
+  xhttp.open("POST", "/suggestionsML/", true);
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  var data = {};
+  data["rxs"] = rxs;
+  data["ccs"] = ccs;
+  data["ixs"] = ixs;
+  data["dxs"] = dxs;
+  data["contact"] = document.getElementById("mobile").value;
+  xhttp.send(JSON.stringify(data));
+  //console.log(data);
+}
+function showRX_brands(val){
+
+   document.getElementById('bnm').style.display = "block";
+      for (let i = 0; i < 100; i++) {
+         document.getElementById('rxsuggestionBN'+(i+1).toString()).style.display = "none";
+      }
+      for (let i = 0; i < val[2].length; i++) {
+            document.getElementById('rxsuggestionBN'+(i+1).toString()).innerHTML = val[2][i];
+            document.getElementById('rxsuggestionBN'+(i+1).toString()).style.display = "block";
+            document.getElementById('rxsuggestionBN'+(i+1).toString()).onclick = function() {add_suggestion("RX-"+val[2][i])}
+      }
+}
+function add_suggestion(val){
+
+
+   if (val.startsWith("DX-")){
+      if (dxs[dxs.length-1] == ""){
+         dxs[dxs.length-1] =val.replace("DX-", "");
+      }
+      else{
+      dxs.push(val.replace("DX-", ""));
+      }
+      updateUI();
+   }
+   if (val.startsWith("CC-")){
+      if (ccs[ccs.length-1] == ""){
+         ccs[ccs.length-1] =val.replace("CC-", "");
+      }
+      else{
+      ccs.push(val.replace("CC-", ""));
+      }
+      updateUI();
+   }
+   if (val.startsWith("RX-")){
+      if (rxs[rxs.length-1] == ""){
+         rxs[rxs.length-1] =val.replace("RX-", "");
+      }
+      else{
+      rxs.push(val.replace("RX-", ""));
+      doses.push("");
+    duration.push("");
+    before.push("checked");
+    after.push("");
+      }
+         {% for i in range(100) %}
+   document.getElementById('rxsuggestionBN{{ i+1 }}').style.display = "none";
+   {% endfor %}
+      updateUI();
+   }
+   if (val.startsWith("IX-")){
+      if (ixs[ixs.length-1] == ""){
+         ixs[ixs.length-1] =val.replace("IX-", "");
+      }
+      else{
+         ixs.push(val.replace("IX-", ""));
+      }
+      updateUI();
+   }
+
+}
+
+function updateHistory(){
+var mob = document.getElementById("mobile").value;
+document.getElementById("history").innerHTML = '<a href="/history/'+mob+'">Drug History</a>';
+document.getElementById("p_info").innerHTML = '<a href="/personalized_info/'+mob+'">Personalized Information</a>';
+}
+
+
+
+
+</script>

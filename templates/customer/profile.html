@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <style>
+        .blueback{
+            background-color: #1e4482;
+        }
+    </style>
+
+
+    {% include "nav.html" %}
+
+</head>
+
+<body>
+<div align="center">
+    <div style="width: 80%">
+        <br/><br/>
+        <div align="center"><h1>{{session['username']}}</h1></div>
+        <br/>
+        <a href="/update_profile/" class="btn btn-primary ">Update Information</a>
+
+        <hr>
+        <br/>
+
+        <ul align="left" class="w3-ul w3-card-4" style="width: 70%">
+            <li class="list-group-item"><h7> <b>Name:</b> {{customer_information['fullname']}} </h7></li>
+            <li class="list-group-item"><h7> <b>Gender:</b> {{customer_information['gender']}} </h7></li>
+            <li class="list-group-item"><h7> <b>Email:</b> {{customer_information['email']}} </h7></li>
+            <li class="list-group-item"><h7> <b>Phone:</b> {{customer_information['mobile']}} </h7></li>
+            <li class="list-group-item"><h7> <b>Date of Birth:</b> {{customer_information['birthday']}} </h7></li>
+            {% if customer_information['mode'] == "doctor" %}
+            <li class="list-group-item"><h7> <b>Degrees:</b> {{customer_information['degrees']}} </h7></li>
+            <li class="list-group-item"><h7> <b>Chamber Address:</b> {{customer_information['caddr']}} </h7></li>
+            {% endif %}
+
+        </ul>
+      <br/><br/>
+
+
+
+
+    </div>
+</div>
+<footer> {% include "footer.html" %}</footer>
+
+</body>
+
+</html>

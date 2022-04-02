@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+
+    {% include "mobile/nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center">
+    <br/><br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    {% if msg['done'] %}
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h5>Password reset link has been sent to your email.</h5>
+    {% else %}
+        <br/>
+        <h3>Forgot Password</h3>
+        <form action="" method="POST" style="width: 65%">
+            <div class="form-group">
+              <label></label>
+              <input type="text" name="username" class="form-control" placeholder="Username or Email" value="{{request.form.username}}">
+                {% if msg['username'] %}
+                    <span style="font-size: small;color: red">{{msg['username']}}</span>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    {% endif %}
+</div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+</body>
+
+</html>

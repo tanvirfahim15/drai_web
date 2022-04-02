@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+    {% include "mobile/nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center">
+    <div style="width: 80%">
+        <br/>
+        <br/>
+
+        <form action = "/update_profile/" method = "POST" style="width: 80%">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" maxlength="15"  class="form-control" id="password" name="password">
+                {% if msg['password'] %}
+                    <span style="font-size: small;color: red">{{msg['password']}}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="c_password">Confirm Password</label>
+                <input type="password" maxlength="15"  class="form-control" id="c_password" name="c_password">
+                {% if msg['c_password'] %}
+                    <span style="font-size: small;color: red">{{msg['c_password']}}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" maxlength="15" class="form-control" id="fullname" name="fullname" value="{{ customer_information['fullname'] }}">
+
+                {% if msg['fullname'] %}
+                    <span style="font-size: small;color: red">{{msg['fullname']}}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" maxlength="50"  class="form-control" id="email" name="email"  value="{{ customer_information['email'] }}">
+
+                {% if msg['email'] %}
+                    <span style="font-size: small;color: red">{{msg['email']}}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="birthday">Birthday</label>
+                <input class="form-control" type="date" value="{{ customer_information['birthday'] }}" id="birthday" name="birthday">
+
+                {% if msg['birthday'] %}
+                    <span style="font-size: small;color: red">{{msg['birthday']}}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="gender" name="gender">
+
+                    {% if data['gender'] == 'male' %}
+                        <option value="male" selected>Male</option>
+                    {% else %}
+                        <option value="male">Male</option>
+                    {% endif %}
+
+                    {% if data['gender'] == 'female' %}
+                        <option value="female" selected>Female</option>
+                    {% else %}
+                        <option value="female">Female</option>
+                    {% endif %}
+
+
+                    {% if data['gender'] == 'other' %}
+                        <option value="other" selected>Other</option>
+                    {% else %}
+                        <option value="other">Other</option>
+                    {% endif %}
+
+                </select>
+                {% if msg['gender'] %}
+                    <span style="font-size: small;color: red">{{msg['gender']}}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="degrees">Degrees</label>
+                {% if customer_information['degrees'] %}
+                    <input type="text" class="form-control" id="degrees" name="degrees" placeholder="e.g. : MBBS, DMC(2002)" value="{{customer_information['degrees']}}">
+                {% else %}
+                    <input type="text"  class="form-control" id="degrees" name="degrees" placeholder="e.g. : MBBS, DMC(2002)">
+                {% endif %}
+
+            </div>
+
+            <div class="form-group" id="caddis">
+                    <label for="caddr">Chamber Address</label>
+                    {% if customer_information['caddr'] %}
+                    <input type="text" class="form-control" id="caddr" name="caddr"  value="{{customer_information['caddr']}}">
+
+                    {% else %}
+                    <input type="text"  class="form-control" id="caddr" name="caddr" >
+
+                    {% endif %}
+
+                </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-dark " value="Update Information">
+            </div>
+        </form>
+
+
+
+
+    </div>
+</div>
+</body>
+
+</html>

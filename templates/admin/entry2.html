@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+
+<body>
+<div align="center">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+        <form action="" method="POST" style="width: 25%">
+
+            <div class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+
+<select name="mode" id="mode"  class="form-select mt-2 bg-dark text-white" style="width:95%">
+  <option value="dx">Dx</option>
+  <option value="cc">Cc</option>
+  <option value="ix">Ix</option>
+  <option value="rx">Rx</option>
+</select>
+                     </div>
+
+            <div class="form-group" id="rxs">
+              <input class="form-control" onkeyup="update()" id="text" name="text" list="datalist" value="" autocomplete="off">
+                <datalist id="datalist">
+                </datalist>
+            </div>
+            <div class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Support Count</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+
+                        </div>
+                     </div>
+            </div>
+            <div class="form-group" >
+              <input type="text" name="support" class="form-control">
+            </div>
+            <div class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Weight</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+
+                        </div>
+                     </div>
+            </div>
+            <div class="form-group" >
+              <input type="text" name="weight" class="form-control">
+            </div>
+
+            <div class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Time Series</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+
+                        </div>
+                     </div>
+            </div>
+            <div class="form-group" >
+              <input type="text" name="time_series" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+</div>
+
+</body>
+</html>
+<script>
+    var dxs= 1;
+    function addDx(){
+        dxs += 1;
+        var str =  '<input type="text" name="dx'+String(dxs)+'" class="form-control">';
+        document.getElementById("dxs").insertAdjacentHTML( 'beforeend', str );
+    }
+    var ccs= 1;
+    function addCc(){
+        ccs += 1;
+        var str =  '<input type="text" name="cc'+String(ccs)+'" class="form-control">';
+        document.getElementById("ccs").insertAdjacentHTML( 'beforeend', str );
+    }
+    var ixs= 1;
+    function addIx(){
+        ixs += 1;
+        var str =  '<input type="text" name="ix'+String(ixs)+'" class="form-control">';
+        document.getElementById("ixs").insertAdjacentHTML( 'beforeend', str );
+    }
+    var rxs= 1;
+    function addRx(){
+        rxs += 1;
+        var str =  '<input type="text" name="rx'+String(rxs)+'" class="form-control">';
+        document.getElementById("rxs").insertAdjacentHTML( 'beforeend', str );
+    }
+
+
+    function update(){
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          sug = JSON.parse(this.responseText);
+          sug_ = "";
+          for (let i = 0; i < sug.length; i++) {
+            sug_+='<option value="'+sug[i]+'">'
+      }
+console.log(sug);
+       document.getElementById("datalist").innerHTML = sug_;
+
+
+        }
+      };
+      xhttp.open("POST", "/admin/entry2list", true);
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      var data = {};
+      data["text"] = document.getElementById("text").value;
+      data["mode"] = document.getElementById("mode").value;
+      xhttp.send(JSON.stringify(data));
+    }
+</script>

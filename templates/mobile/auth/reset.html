@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+
+    {% include "mobile/nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center">
+    <br/><br/>
+
+        <br/>
+        <h3>Reset Password</h3>
+        <form action="" method="POST" style="width: 65%">
+            <div class="form-group">
+              <label></label>
+              <input type="password" name="password" class="form-control" placeholder="Password">
+                {% if msg['password'] %}
+                    <span style="font-size: small;color: red">{{msg['password']}}</span>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+</div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+    {% include "nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center">
+    <div style="width: 80%">
+        <br/>
+        <br/>
+        <b>Status: </b>{{ p_info['status'] }}<br/><br/>
+        <form action = "/personalized_info/{{ mobile }}/" method = "POST" style="width: 30%">
+
+            <div class="form-group">
+                <label for="visits">Last 15 days visit</label>
+                <input type="text" maxlength="15" class="form-control" id="visits" name="visits" value="{{ p_info['visits'] }}">
+
+            </div>
+            <div class="form-group">
+                <label for="allergic_reactions">Allergic reactions to medications</label>
+                <input type="text" maxlength="15" class="form-control" id="allergic_reactions" name="allergic_reactions" value="{{ p_info['allergic_reactions'] }}">
+
+            </div>
+            <div class="form-group">
+                <label for="disability">Disability or restrictions to IX</label>
+                <input type="text" maxlength="15" class="form-control" id="disability" name="disability" value="{{ p_info['disability'] }}">
+
+            </div>
+            <div class="form-group">
+                <label for="previous_diseases">Previous diseases</label>
+                <input type="text" maxlength="15" class="form-control" id="previous_diseases" name="previous_diseases" value="{{ p_info['previous_diseases'] }}">
+
+            </div>
+            <div class="form-group">
+                <label for="inheritance">Disease inheritance</label>
+                <input type="text" maxlength="15" class="form-control" id="inheritance" name="inheritance" value="{{ p_info['inheritance'] }}">
+
+            </div>
+
+
+            <div class="form-group">
+                {% if user["mode"] == "doctor" %}
+                <input type="submit" class="btn btn-dark btn-lg" value="Update/Verify">
+                {% endif %}
+                {% if user["mode"] == "patient" %}
+                <input type="submit" class="btn btn-dark btn-lg" value="Update Information">
+                {% endif %}
+            </div>
+        </form>
+
+
+
+
+    </div>
+</div>
+<footer> {% include "footer.html" %}</footer>
+</body>
+
+</html>

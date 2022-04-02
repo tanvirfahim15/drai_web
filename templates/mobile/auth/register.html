@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    {% include "mobile/nav.html" %}
+<script>
+
+        function doc(){
+            document.getElementById("patient").checked = false;
+            document.getElementById("doctor").checked = true;
+
+            document.getElementById("doctormode").className = "btn btn-primary active";
+            document.getElementById("patientmode").className = "btn btn-primary";
+            document.getElementById("bmdis").style.display = "block";
+            document.getElementById("degdis").style.display = "block";
+            document.getElementById("caddis").style.display = "block";
+        }
+        function pat(){
+            document.getElementById("patient").checked = true;
+            document.getElementById("doctor").checked = false;
+
+            document.getElementById("doctormode").className = "btn btn-primary";
+            document.getElementById("patientmode").className = "btn btn-primary active";
+
+            document.getElementById("bmdis").style.display = "none";
+            document.getElementById("degdis").style.display = "none";
+            document.getElementById("caddis").style.display = "none";
+
+        }
+    </script>
+
+</head>
+
+<body>
+<div align="center">
+    <div style="width: 70%">
+        <br/>
+        <br/>
+
+
+
+
+        <div align="left">
+
+            <form action = "/auth/register/mobile/" method = "POST" >
+                <div class="form-group" align="center">
+                    <div class="btn-group">
+                      <button type="button" id="doctormode" style="width:90px" class="btn btn-primary active" onclick="doc()">Doctor</button>
+                      <button type="button" id="patientmode" style="width:90px" class="btn btn-primary" onclick="pat()">Patient</button>
+                    </div>
+                </div>
+                <div class="form-group" align="center" style="display:none">
+
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="doctor" name="doctor" checked>Doctor
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="patient" name="patient"  value="">Patient
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    {% if data['username'] %}
+                    <input type="text" maxlength="15" class="form-control" id="username" name="username" value="{{data['username']}}">
+                    {% else %}
+                    <input type="text" maxlength="15" class="form-control" id="username" name="username">
+                    {% endif %}
+
+
+                    {% if msg['username'] %}
+                    <span style="font-size: small;color: red">{{msg['username']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" maxlength="15"  class="form-control" id="password" name="password">
+                    {% if msg['password'] %}
+                    <span style="font-size: small;color: red">{{msg['password']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="c_password">Confirm Password</label>
+                    <input type="password" maxlength="15"  class="form-control" id="c_password" name="c_password">
+                    {% if msg['c_password'] %}
+                    <span style="font-size: small;color: red">{{msg['c_password']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    {% if data['fullname'] %}
+                    <input type="text" maxlength="15" class="form-control" id="fullname" name="fullname" value="{{data['fullname']}}">
+                    {% else %}
+                    <input type="text" maxlength="15" class="form-control" id="fullname" name="fullname">
+                    {% endif %}
+
+                    {% if msg['fullname'] %}
+                    <span style="font-size: small;color: red">{{msg['fullname']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    {% if data['email'] %}
+                    <input type="email" maxlength="50"  class="form-control" id="email" name="email"  value="{{data['email']}}">
+                    {% else %}
+                    <input type="email" maxlength="50"  class="form-control" id="email" name="email">
+                    {% endif %}
+                    {% if msg['email'] %}
+                    <span style="font-size: small;color: red">{{msg['email']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Birthday</label>
+                    {% if data['birthday'] %}
+                    <input class="form-control" type="date" value="{{data['birthday']}}" id="birthday" name="birthday">
+                    {% else %}
+                    <input class="form-control" type="date" value="1990-01-01" id="birthday" name="birthday">
+                    {% endif %}
+                    {% if msg['birthday'] %}
+                    <span style="font-size: small;color: red">{{msg['birthday']}}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="gender" name="gender">
+                        {% if data['gender'] == '0' %}
+                        <option value="0" selected>Choose...</option>
+                        {% else %}
+                        <option value="0">Choose...</option>
+                        {% endif %}
+
+                        {% if data['gender'] == 'male' %}
+                        <option value="male" selected>Male</option>
+                        {% else %}
+                        <option value="male">Male</option>
+                        {% endif %}
+
+                        {% if data['gender'] == 'female' %}
+                        <option value="female" selected>Female</option>
+                        {% else %}
+                        <option value="female">Female</option>
+                        {% endif %}
+
+
+                        {% if data['gender'] == 'other' %}
+                        <option value="other" selected>Other</option>
+                        {% else %}
+                        <option value="other">Other</option>
+                        {% endif %}
+
+                    </select>
+                    {% if msg['gender'] %}
+                    <span style="font-size: small;color: red">{{msg['gender']}}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    {% if data['mobile'] %}
+                    <input type="text" class="form-control" maxlength="11" id="mobile" name="mobile" value="{{data['mobile']}}">
+
+                    {% else %}
+                    <input type="text" class="form-control" maxlength="11" id="mobile" name="mobile">
+                    {% endif %}
+                    {% if msg['mobile'] %}
+                    <span style="font-size: small;color: red">{{msg['mobile']}}</span>
+                    {% endif %}
+                </div>
+
+
+
+                <div class="form-group" id="bmdis">
+                    <label for="bm_reg">BM Registration No</label>
+                    {% if data['fullname'] %}
+                    <input type="text" maxlength="20" class="form-control" id="bm_reg" name="bm_reg" value="{{data['bm_reg']}}">
+                    {% else %}
+                    <input type="text" maxlength="20" class="form-control" id="bm_reg" name="bm_reg">
+                    {% endif %}
+
+                    {% if msg['fullname'] %}
+                    <span style="font-size: small;color: red">{{msg['bm_reg']}}</span>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group" id="degdis">
+                    <label for="degrees">Degrees</label>
+                    {% if data['degrees'] %}
+                    <input type="text" class="form-control" id="degrees" name="degrees" placeholder="e.g. : MBBS, DMC(2002)" value="{{data['degrees']}}">
+
+                    {% else %}
+                    <input type="text"  class="form-control" id="degrees" name="degrees" placeholder="e.g. : MBBS, DMC(2002)">
+
+                    {% endif %}
+
+                </div>
+
+                <div class="form-group" id="caddis">
+                    <label for="caddr">Chamber Address</label>
+                    {% if data['caddr'] %}
+                    <input type="text" class="form-control" id="caddr" name="caddr"  value="{{data['caddr']}}">
+
+                    {% else %}
+                    <input type="text"  class="form-control" id="caddr" name="caddr" >
+
+                    {% endif %}
+
+                </div>
+                <div align="center">
+                    <img src="{{ captcha[captcha_text] }}">
+                </div>
+                <div class="form-group">
+                    <label for="captcha">Type the text above </label>
+                    <input type="text" class="form-control"  id="captcha" name="captcha">
+                    <input type="text" class="form-control"  id="captcha_text" name="captcha_text" value="{{ captcha_text }}" hidden>
+                    {% if msg['captcha'] %}
+                    <span style="font-size: small;color: red">{{msg['captcha']}}</span>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+
+                <div class="form-group" align="center">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" id="terms" name="terms"> I agree to <a href="/terms/">terms of use</a>
+                    </label><br/>
+                    {% if msg['terms'] %}
+                    <span style="font-size: small;color: red">{{msg['terms']}}</span>
+                    {% endif %}
+                </div>
+
+
+
+
+                <div class="form-group" align="center">
+                    <input type="submit" class="btn btn-dark btn-lg" value="Register">
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>

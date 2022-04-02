@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+   {% include "nav.html" %}
+
+</head>
+<body  >
+   <div align="center">
+<br/>
+<br/>
+
+       <form class="d-flex mt-2 mb-2" style="width: 60%;" action="" method="post">
+            <input id="searchtext" name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" value="{{search_text}}">
+            <button class="btn btn-primary" type="submit"><i class="fa fa-search" aria-hidden="true" ></i></button>
+            <br>
+         </form>
+         {% if prescriptions|length>0 %}
+          <div style="width:60%" id="lists">
+          {% for p in range(pres|length) %}
+                    {% if p==0 %}
+                    <div id="pres{{p}}" style="display:block;">
+                  {% else %}
+                    <div id="pres{{p}}" style="display:none;">
+
+                  {% endif %}
+            {% for obj in pres[p] %}
+                    <div class="list-group-item list-group-item-action" id='{{obj["_id"]}}'>
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Patient Name: {{ obj['pt_name'] }}</h5>
+                            <small class="text-muted">Type: {{ obj['type'] }}</small>
+                        </div>
+                        <div align="left" style="width: 100%;">
+                            <p class="mb-1">Mobile: {{ obj['mobile'] }}</p>
+                            <p class="mb-1">Uploaded: {{ obj['date'] }}</p>
+                            <p class="mb-1">
+                                <span id="show{{obj['_id']}}" style="cursor: pointer;display:inline-block" onclick="show('{{obj['_id']}}','/view_file/{{obj['_id']}}.{{obj['ext']}}')"><i class="fa fa-eye" aria-hidden="true"></i> View</span>
+                                <span id="hide{{obj['_id']}}" style="cursor: pointer;display:none" onclick="hide('{{obj['_id']}}')" ><i class="fa fa-eye-slash" aria-hidden="true"></i> Hide</span>
+                             &nbsp;&nbsp;&nbsp;<a href="/download/{{obj['_id']}}.{{obj['ext']}}"><i class="fa fa-download" aria-hidden="true"></i> Download</a>
+                            &nbsp;&nbsp;&nbsp;<span style="color:red;cursor: pointer;" onclick='delete_("{{obj["_id"]}}")'><i class="fa fa-trash" aria-hidden="true"></i> Delete</span></p>
+
+                        </div>
+                        {% if obj['ext'] != "pdf" %}
+                        <img src="" id="ifr{{obj['_id']}}"  style=" width: 100%;display:none "></img>
+                        {% endif %}
+
+                        {% if obj['ext'] == "pdf" %}
+                        <iframe src="" id="ifr{{obj['_id']}}"  style=" width: 100%;display:none "></iframe>
+                        {% endif %}
+
+                    </div>
+          {% endfor %}</div>
+          {% endfor %}</div><br/><br/><br/>
+
+
+              <div class="btn-group" role="group" aria-label="Basic example">
+        {% for p in range(pres|length) %}
+        <button type="button" class="btn btn-secondary" onclick="selected({{ p }})">{{ p+1 }}</button>
+        {% endfor %}
+        </div>
+         {% else %}
+         <br/>
+         <br/>
+         <br/>
+         <span style="font-size: xx-large;color: #cccccc;font-weight: bolder">No prescriptions was found</span>
+         <br/>
+         <br/>
+         <br/>
+         {% endif %}
+
+
+
+
+
+
+
+
+
+
+<br/>
+<br/>
+<br/>
+     {{files}}
+   </div>
+</body>
+</html>
+<script>
+
+    function selected(id){
+{% for p in range(pres|length) %}
+
+        document.getElementById('pres{{p}}').style.display = "none";
+
+
+{% endfor %}
+
+         document.getElementById('pres'+id.toString()).style.display = "block";
+
+    }
+
+    function delete_(id){
+
+
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById(id).style.display = "none";
+            }
+        };
+        xhttp.open("GET", "/delete_upload/"+id, true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var data = {};
+        xhttp.send();
+
+}
+    function show(id, value){
+
+document.getElementById("ifr"+id).src = value;
+document.getElementById("ifr"+id).style.display = "block";
+
+document.getElementById("show"+id).style.display = "none";
+document.getElementById("hide"+id).style.display = "inline-block";
+console.log(id);
+
+}
+    function hide(id){
+
+document.getElementById("ifr"+id).style.display = "none";
+document.getElementById("show"+id).style.display = "inline-block";
+document.getElementById("hide"+id).style.display = "none";
+console.log(id);
+
+}
+</script>

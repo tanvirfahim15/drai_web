@@ -1,0 +1,1 @@
+Contains codes for serving the requests related to admin panel

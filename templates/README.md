@@ -1,0 +1,1 @@
+Contains html templates for user interfaces

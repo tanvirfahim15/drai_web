@@ -1,0 +1,1 @@
+Contains codes for all the utility functions dependent on external(backend) servers

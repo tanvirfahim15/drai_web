@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "nav.html" %}
+</head>
+<body>
+<div class="container mt-4 mb-4">
+    <!--header starts-->
+    <form action="" method="POST" autocomplete="off">
+
+        <section class="patient-section mb-4 pb-2 pt-2 shadow" style="background-color: rgb(243, 242, 245); ">
+            <div class="row">
+
+                <div class="col-sm-4" style="margin-left: 4%;">
+                    <div class="form-group mb-2">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ presobj['name'] }}" disabled>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="age">Age</label>
+                        <input type="text" name="age" id="age" class="form-control" value="{{ presobj['age'] }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex</label>
+
+                        <input type="text" name="sex" id="sex" class="form-control" value="{{ presobj['sex'] }}" disabled>
+
+                    </div>
+
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group mb-2">
+                        <label for="mobile">Mobile</label>
+                        <input type="text" name="mobile" id="mobile" class="form-control" value="{{ presobj['mobile'] }}" disabled>
+
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label for="email">Email address</label>
+                        <input name="email" type="email" class="form-control" id="email" value="{{ presobj['email'] }}" disabled>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="address">Address</label>
+                        <input type="text" name="address" id="address" class="form-control" value="{{ presobj['address'] }}" disabled>
+                    </div>
+
+                </div>
+                <div class="col-sm-3" style="margin-right:4%;">
+                    <div class="form-group mb-2">
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date" class="form-control" value="{{ presobj['date'] }}" disabled>
+                    </div>
+                    <div class="row" align="center" style=" margin-top: 30px;">
+
+                        <div class="col-sm-12">
+                            <a href="/prescription/{{ presobj['prescriptionid'] }}/pdf" class="btn btn-secondary" type="button"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <div class="row border shadow pt-3 pb-3" style="background-color: mintcream;">
+            <div class="col-sm-4 pt-2">
+                <div class="form-group mb-2">
+                    <div id='dxs'>
+                        <div align='center' style="width: 100%;">
+                            <h4 class="btn btn-dark" style="width: 100%;cursor: default !important;">Disease/Condition/Dx</h4>
+                        </div>
+                        {% for dxs in presobj['dx'] %}
+                        <div class="autocomplete" id="outerdx" style="width: 100%;">
+                            <input class="form-control" id="dx" type="text" name="dx" size="30" value="{{ dxs }}" disabled>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="form-group mb-2">
+                    <div id='ccs'>
+                        <div align='center' style="width: 100%;">
+                            <h4 class="btn btn-dark" style="width: 100%;cursor: default !important;">CC</h4>
+                        </div>
+                        {% for ccs in presobj['cc'] %}
+                        <div class="autocomplete" id="outercc" style="width: 100%;">
+                            <input class="form-control" id="cc" type="text" name="cc" value="{{ ccs }}" size="30" disabled>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+
+                </div>
+
+                <div class="form-group mb-2">
+                    <div id='ixs'>
+                        <div align='center' style="width: 100%;">
+                            <h4 class="btn btn-dark" style="width: 100%;cursor: default !important;">IX</h4>
+                        </div>
+                        {% for ixs in presobj['ix'] %}
+                        <div class="autocomplete" id="outerix" style="width: 100%;">
+                            <input class="form-control" id="ix" type="text" name="ix" value="{{ ixs }}" size="30" disabled>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-sm-4 pt-2 mb-2 shadow border rounded" style="background-color: rgb(235, 250, 252);">
+                <div class="form-group">
+                    <div id='rxs'>
+                        <div align='center' style="width: 100%;">
+                            <h4 class="btn btn-dark" style="width: 100%;cursor: default !important;">RX</h4>
+                        </div>
+                        {% for rxs in presobj['rx'] %}
+
+                        {% if rxs["mode"]=="1" %}
+                        <div style="background:#EEF" class="pt-2 pl-2 pr-2 pb-2">
+                            <input class="form-control" value="{{ rxs["rx"] }}" disabled>
+                            <input class="form-control mb-1 mt-1" value="{{ rxs["duration"] }}" disabled>
+                        </div>
+                        {% else %}
+
+                        <div style="background:#EEF" class="pt-2 pl-2 pr-2">
+                            <input class="form-control" value="{{ rxs["rx"] }}" disabled>
+                            <table><tbody>
+                            <tr>
+                                <td width="40%">
+                                <input class="form-control mb-1 mt-1" value="{{ rxs["duration"] }}" disabled>
+                                </td>
+                                <td class="pt-2 pl-2"><label class="form-check-label"><input type="checkbox" {{ rxs["days"] }} disabled> Days </label></td>
+                                <td class="pt-2"><label class="form-check-label"> <input type="checkbox"  {{ rxs["months"] }} disabled> Months </label></td>
+                            </tr>
+                            </tbody></table>
+                            <table><tbody><tr>
+                                <td width="40%"><input class="form-control" value="{{ rxs["dose"] }}" disabled></td>
+                                <td class="pl-2">খাওয়ার <label class="form-check-label"><input type="checkbox" {{ rxs["before"] }} disabled> আগে </label><label class="form-check-label"> <input type="checkbox" {{ rxs["after"] }} disabled> পরে </label></td>
+                            </tr></tbody></table>
+                         <hr></div>
+
+
+                        {% endif %}
+
+                        {% endfor %}
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-sm-4 pt-2">
+
+                <div class="">
+                    <div align='center' style="width: 100%;">
+                        <h4 class="btn btn-dark" style="width: 100%; cursor: default !important;">O/E</h4>
+                    </div>
+
+                    <div class="row" align="center">
+                  <div class="col">
+                     <div class="form-group">
+
+                        <label for="bp">BP </label>
+                        <input class="form-control" type="text" name="bp" id="bp" value="{{ presobj['bp'] }}" disabled>
+
+                    </div>
+
+                  </div>
+                  <div class="col">
+
+                     <div class="form-group">
+                        <label for="pulse">Pulse </label>
+                        <input class="form-control" type="text" name="pulse" id="pulse" value="{{ presobj['pulse'] }}" disabled>
+                    </div>
+                  </div>
+                  <div class="col">
+
+                     <div class="form-group">
+                        <label for="temp">Temp</label>
+                        <input class="form-control" type="text" name="temp" id="temp" value="{{ presobj['temp'] }}" disabled>
+                    </div>
+                  </div>
+               </div>
+                    <div class="row">
+               <div class="col">
+                  <div class="form-group">
+
+                        <label for="heart">Heart</label>
+                        <input class="form-control" type="text" name="heart" id="heart" value="{{ presobj['heart'] }}" disabled>
+
+                    </div>
+               </div>
+               <div class="col">
+                  <div class="form-group">
+                        <label for="lungs">Lungs</label>
+                        <input class="form-control" type="text" name="lungs" id="lungs" value="{{ presobj['lungs'] }}" disabled>
+                    </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                        <label for="abd">Abd</label>
+                        <input class="form-control" type="text" name="abd" id="abd" value="{{ presobj['abd'] }}" disabled>
+
+                    </div>
+               </div>
+            </div>
+                    <div class="row">
+               <div class="col">
+
+                  <div class="form-group">
+                        <label for="anemia">Anemia</label>
+                        <input class="form-control" type="text" name="anemia" id="anemia" value="{{ presobj['anemia'] }}" disabled>
+                    </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                        <label for="weight">Weight</label>
+                        <input class="form-control" type="text" name="weight" id="weight" value="{{ presobj['weight'] }}" disabled>
+                     </div>
+               </div>
+               <div class="col">
+
+                  <div class="form-group">
+                        <label for="sugar">Sugar</label>
+                        <input class="form-control" type="text" name="sugar" id="sugar" value="{{ presobj['sugar'] }}" disabled>
+                     </div>
+               </div>
+            </div>
+                    <div class="row">
+               <div class="col">
+
+                  <div class="form-group">
+                        <label for="jaundice">Jaundice</label>
+                        <input class="form-control" type="text" name="jaundice" id="jaundice" value="{{ presobj['jaundice'] }}" disabled>
+                    </div>
+               </div>
+               <div class="col">
+
+
+                  <div class="form-group">
+                        <label for="cyanosis">Cyanosis</label>
+                        <input class="form-control" type="text" name="cyanosis" id="cyanosis" value="{{ presobj['cyanosis'] }}" disabled>
+                    </div>
+               </div>
+               <div class="col">
+
+
+                  <div class="form-group">
+                        <label for="odemea">Odemea</label>
+                        <input class="form-control" type="text" name="odemea" id="odemea" value="{{ presobj['odemea'] }}" disabled>
+                    </div>
+               </div>
+            </div>
+<div  class="bg-dark text-white mb-2" align='center' style="width: 100%;height: 45px;border-radius: 5px;">
+                     <div class="row">
+                        <div class="col mt-2 ml-3" align="left">
+                           <h5>Advice</h5>
+                        </div>
+                        <div class="col mt-2 mr-2" align="right">
+                        </div>
+                     </div>
+            </div>
+            <div class="row">
+               <div class="col">
+               <textarea cols="44" name="advice" disabled>{{presobj['advice']}}</textarea>
+               </div>
+            </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<footer> {% include "footer.html" %}</footer>
+</html>

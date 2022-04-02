@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+    {% include "nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center">
+    <br/><br/>
+    <h1>Login</h1>
+
+    <form action="" method="POST" style="width: 25%">
+        <div class="form-group">
+          <label></label>
+          <input type="text" name="username" class="form-control" placeholder="Username" value="{{request.form.username}}">
+        </div>
+        <div class="form-group">
+          <label></label>
+          <input type="password" name="password" class="form-control" placeholder="Password" value="{{request.form.password}}">
+        </div>
+        {% if error %}
+        <span style="color: red">{{ error }}</span><br/><br/>
+        {% endif %}
+        <br/>
+        <div align="center">
+                    <img src="{{ captcha[captcha_text] }}">
+                </div>
+                <div class="form-group">
+                    <label for="captcha">Type the text above </label>
+                    <input type="text" class="form-control"  id="captcha" name="captcha">
+                    <input type="text" class="form-control"  id="captcha_text" name="captcha_text" value="{{ captcha_text }}" hidden>
+                    {% if msg['captcha'] %}
+                    <span style="font-size: small;color: red">{{msg['captcha']}}</span>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+        <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+</div>
+<br/>
+<div align="center">
+    <a href="/auth/forgot/">Forgot Password?</a>
+</div>
+<footer> {% include "footer.html" %}</footer>
+
+</body>
+
+</html>

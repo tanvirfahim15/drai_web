@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    {% include "nav.html" %}
+
+
+</head>
+
+<body>
+<div align="center" style="">
+    <div style="width: 80%;" align="center">
+        <br/>
+         <form action="/" method="post" style="width: 100%;">
+
+            <div class="container-fluid" style="width: 100%">
+                <div class="row" style="width: 100%">
+                    <div class="col-sm-10">
+                        <div class="form-group">
+                            <input type="text" value="{{ data["search"] }}" class="form-control" style=" height: 45px;font-size: 25px" id="search" placeholder="Search for Doctors......." name="search">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+
+             <div class="form-group" style="width: 95%">
+                    <label for="speciality">স্পেশালিটি</label>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="speciality" name="speciality" style="width: 100%" >
+                        {% if data['speciality'] %}
+                            <option value="-">----------</option>
+                            {% if data['speciality']=="Cardiology" %}
+                            <OPTION value="Cardiology" selected>Cardiology(হৃদরোগ)</OPTION>
+                            {% else %}
+                            <OPTION value="Cardiology">Cardiology(হৃদরোগ)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Dentistry" %}
+                            <OPTION value="Dentistry" selected>Dentistry(দাঁত)</OPTION>
+                            {% else %}
+                            <OPTION value="Dentistry">Dentistry(দাঁত)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Dermatology" %}
+                            <OPTION value="Dermatology" selected>Dermatology(চর্ম)</OPTION>
+                            {% else %}
+                            <OPTION value="Dermatology">Dermatology(চর্ম)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Endocrinology" %}
+                            <OPTION value="Endocrinology" selected>Endocrinology(ডায়াবেটিস ও হরমোন)</OPTION>
+                            {% else %}
+                            <OPTION value="Endocrinology">Endocrinology(ডায়াবেটিস ও হরমোন)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="ENT" %}
+                            <OPTION value="ENT" selected>ENT(নাক, কান, গলা )</OPTION>
+                            {% else %}
+                            <OPTION value="ENT">ENT(নাক, কান, গলা )</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Gastroenterology" %}
+                            <OPTION value="Gastroenterology" selected>Gastroenterology(পাকস্থলী)</OPTION>
+                            {% else %}
+                            <OPTION value="Gastroenterology">Gastroenterology(পাকস্থলী)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="General Physician" %}
+                            <OPTION value="General Physician" selected>General Physician</OPTION>
+                            {% else %}
+                            <OPTION value="General Physician">General Physician</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="General Surgery" %}
+                            <OPTION value="General Surgery" selected>General Surgery</OPTION>
+                            {% else %}
+                            <OPTION value="General Surgery">General Surgery</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Gynaecology" %}
+                            <OPTION value="Gynaecology" selected>Gynaecology(স্ত্রীরোগ)</OPTION>
+                            {% else %}
+                            <OPTION value="Gynaecology">Gynaecology(স্ত্রীরোগ)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Haematology" %}
+                            <OPTION value="Haematology" selected>Haematology(রক্ত)</OPTION>
+                            {% else %}
+                            <OPTION value="Haematology">Haematology(রক্ত)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Hepatology" %}
+                            <OPTION value="Hepatology" selected>Hepatology(লিভার)</OPTION>
+                            {% else %}
+                            <OPTION value="Hepatology">Hepatology(লিভার)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Infectious Diseases" %}
+                            <OPTION value="Infectious Diseases" selected>Infectious Diseases</OPTION>
+                            {% else %}
+                            <OPTION value="Infectious Diseases">Infectious Diseases</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Infertility" %}
+                            <OPTION value="Infertility" selected>Infertility</OPTION>
+                            {% else %}
+                            <OPTION value="Infertility">Infertility</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Medicine" %}
+                            <OPTION value="Medicine" selected>Medicine(মেডিসিন)</OPTION>
+                            {% else %}
+                            <OPTION value="Medicine">Medicine(মেডিসিন)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Nephrology" %}
+                            <OPTION value="Nephrology" selected>Nephrology(কিডনি)</OPTION>
+                            {% else %}
+                            <OPTION value="Nephrology">Nephrology(কিডনি)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Neuromedicine" %}
+                            <OPTION value="Neuromedicine" selected>Neuromedicine</OPTION>
+                            {% else %}
+                            <OPTION value="Neuromedicine">Neuromedicine</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Neurosurgery" %}
+                            <OPTION value="Neurosurgery" selected>Neurosurgery</OPTION>
+                            {% else %}
+                            <OPTION value="Neurosurgery">Neurosurgery</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Nutritionist" %}
+                            <OPTION value="Nutritionist" selected>Nutritionist(পুষ্টি)</OPTION>
+                            {% else %}
+                            <OPTION value="Nutritionist">Nutritionist(পুষ্টি)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Oncology" %}
+                            <OPTION value="Oncology" selected>Oncology(cancer)</OPTION>
+                            {% else %}
+                            <OPTION value="Oncology">Oncology(cancer)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Ophthalmology" %}
+                            <OPTION value="Ophthalmology" selected>Ophthalmology(চক্ষু)</OPTION>
+                            {% else %}
+                            <OPTION value="Ophthalmology">Ophthalmology(চক্ষু)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Orthopaedics" %}
+                            <OPTION value="Orthopaedics" selected>Orthopaedics(হাড়)/option></OPTION>
+                            {% else %}
+                            <OPTION value="Orthopaedics">Orthopaedics(হাড়)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Paediatrics" %}
+                            <OPTION value="Paediatrics" selected>Paediatrics(শিশুরোগ)</OPTION>
+                            {% else %}
+                            <OPTION value="Paediatrics">Paediatrics(শিশুরোগ)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Pain Management" %}
+                            <OPTION value="Pain Management" selected>Pain Management</OPTION>
+                            {% else %}
+                            <OPTION value="Pain Management">Pain Management</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Physical Medicine" %}
+                            <OPTION value="Physical Medicine" selected>Physical Medicine</OPTION>
+                            {% else %}
+                            <OPTION value="Physical Medicine">Physical Medicine</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Physiotherapy" %}
+                            <OPTION value="Physiotherapy" selected>Physiotherapy</OPTION>
+                            {% else %}
+                            <OPTION value="Physiotherapy">Physiotherapy</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Plastic Surgery" %}
+                            <OPTION value="Plastic Surgery" selected>Plastic Surgery</OPTION>
+                            {% else %}
+                            <OPTION value="Plastic Surgery">Plastic Surgery</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Psychiatry" %}
+                            <OPTION value="Psychiatry" selected>Psychiatry(মনোরোগ)</OPTION>
+                            {% else %}
+                            <OPTION value="Psychiatry">Psychiatry(মনোরোগ)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Sex Specialist" %}
+                            <OPTION value="Sex Specialist" selected>Sex Specialist(যৌন)</OPTION>
+                            {% else %}
+                            <OPTION value="Sex Specialist">Sex Specialist(যৌন)</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Urology" %}
+                            <OPTION value="Urology" selected>Urology</OPTION>
+                            {% else %}
+                            <OPTION value="Urology">Urology</OPTION>
+                            {% endif %}
+                            {% if data['speciality']=="Other" %}
+                            <OPTION value="Other" selected>Other</OPTION>
+                            {% else %}
+                            <OPTION value="Other">Other</OPTION>
+                            {% endif %}
+                        {% else %}
+                            <option value="-">----------</option>
+                            <option value="Cardiology">Cardiology(হৃদরোগ)</option>
+                            <option value="Dentistry">Dentistry(দাঁত)</option>
+                            <option value="Dermatology">Dermatology(চর্ম)</option>
+                            <option value="Endocrinology">Endocrinology(ডায়াবেটিস ও হরমোন)</option>
+                            <option value="ENT">ENT(নাক, কান, গলা )</option>
+                            <option value="Gastroenterology">Gastroenterology(পাকস্থলী)</option>
+                            <option value="General Physician">General Physician</option>
+                            <option value="General Surgery">General Surgery</option>
+                            <option value="Gynaecology">Gynaecology(স্ত্রীরোগ)</option>
+                            <option value="Haematology">Haematology(রক্ত)</option>
+                            <option value="Hepatology">Hepatology(লিভার)</option>
+                            <option value="Infectious Diseases">Infectious Diseases</option>
+                            <option value="Infertility">Infertility</option>
+                            <option value="Medicine">Medicine(মেডিসিন)</option>
+                            <option value="Nephrology">Nephrology(কিডনি)</option>
+                            <option value="Neuromedicine">Neuromedicine</option>
+                            <option value="Neurosurgery">Neurosurgery</option>
+                            <option value="Nutritionist">Nutritionist(পুষ্টি)</option>
+                            <option value="Oncology">Oncology(cancer)</option>
+                            <option value="Ophthalmology">Ophthalmology(চক্ষু)</option>
+                            <option value="Orthopaedics">Orthopaedics(হাড়)</option>
+                            <option value="Paediatrics">Paediatrics(শিশুরোগ)</option>
+                            <option value="Pain Management">Pain Management</option>
+                            <option value="Physical Medicine">Physical Medicine</option>
+                            <option value="Physiotherapy">Physiotherapy</option>
+                            <option value="Plastic Surgery">Plastic Surgery</option>
+                            <option value="Psychiatry">Psychiatry(মনোরোগ)</option>
+                            <option value="Sex Specialist">Sex Specialist(যৌন)</option>
+                            <option value="Urology">Urology</option>
+                            <option value="Other">Other</option>
+                        {% endif %}
+
+                    </select>
+                    {% if msg['speciality'] %}
+                        <span style="font-size: small;color: red">{{ msg['speciality'] }}</span>
+                    {% endif %}
+                </div>
+                    </div>
+                    <div class="col-sm-6">
+
+                <div class="form-group" style="width: 95%">
+                    <label for="division">এলাকা</label>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="division" name="division" style="width: 100%">
+                        {% if data['division'] %}
+                            <option value="-">----------</option>
+                            {% if data['division']=="Agargaon" %}
+                            <OPTION value="Agargaon" selected>আগারগাঁও</OPTION>
+                            {% else %}
+                            <OPTION value="Agargaon">আগারগাঁও</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Azimpur" %}
+                            <OPTION value="Azimpur" selected>আজিমপুর </OPTION>
+                            {% else %}
+                            <OPTION value="Azimpur">আজিমপুর </OPTION>
+                            {% endif %}
+                            {% if data['division']=="Uttara" %}
+                            <OPTION value="Uttara" selected>উত্তরা</OPTION>
+                            {% else %}
+                            <OPTION value="Uttara">উত্তরা</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Elephant Road" %}
+                            <OPTION value="Elephant Road" selected>এ্যালিফেন্ট রোড</OPTION>
+                            {% else %}
+                            <OPTION value="Elephant Road">এ্যালিফেন্ট রোড</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Gulshan" %}
+                            <OPTION value="Gulshan" selected>গুলশান</OPTION>
+                            {% else %}
+                            <OPTION value="Gulshan">গুলশান</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Zigatola" %}
+                            <OPTION value="Zigatola" selected>জিগাতলা</OPTION>
+                            {% else %}
+                            <OPTION value="Zigatola">জিগাতলা</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Dhanmondi" %}
+                            <OPTION value="Dhanmondi" selected>ধানমন্ডি</OPTION>
+                            {% else %}
+                            <OPTION value="Dhanmondi">ধানমন্ডি</OPTION>
+                            {% endif %}
+                            {% if data['division']=="New Market" %}
+                            <OPTION value="New Market" selected>নিউ মার্কেট</OPTION>
+                            {% else %}
+                            <OPTION value="New Market">নিউ মার্কেট</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Farmgate" %}
+                            <OPTION value="Farmgate" selected>ফার্মগেট</OPTION>
+                            {% else %}
+                            <OPTION value="Farmgate">ফার্মগেট</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Mirpur" %}
+                            <OPTION value="Mirpur" selected>মিরপুর</OPTION>
+                            {% else %}
+                            <OPTION value="Mirpur">মিরপুর</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Mohammadpur" %}
+                            <OPTION value="Mohammadpur" selected>মোহাম্মদপুর</OPTION>
+                            {% else %}
+                            <OPTION value="Mohammadpur">মোহাম্মদপুর</OPTION>
+                            {% endif %}
+                            {% if data['division']=="Shahbag" %}
+                            <OPTION value="Shahbag" selected>শাহবাগ</OPTION>
+                            {% else %}
+                            <OPTION value="Shahbag">শাহবাগ</OPTION>
+                            {% endif %}
+                        {% else %}
+                            <option value="-">----------</option>
+                            <option value="Agargaon">আগারগাঁও</option>
+                            <option value="Azimpur">আজিমপুর </option>
+                            <option value="Uttara">উত্তরা</option>
+                            <option value="Elephant Road">এ্যালিফেন্ট রোড</option>
+                            <option value="Gulshan">গুলশান</option>
+                            <option value="Zigatola">জিগাতলা</option>
+                            <option value="Dhanmondi">ধানমন্ডি</option>
+                            <option value="New Market">নিউ মার্কেট</option>
+                            <option value="Farmgate">ফার্মগেট</option>
+                            <option value="Mirpur">মিরপুর</option>
+                            <option value="Mohammadpur">মোহাম্মদপুর</option>
+                            <option value="Shahbag">শাহবাগ</option>
+
+                        {% endif %}
+
+                    </select>
+                    {% if msg['division'] %}
+                        <span style="font-size: small;color: red">{{ msg['division'] }}</span>
+                    {% endif %}
+                </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+         </form>
+        <hr/>
+        <div align="left">
+
+    {% for data in doctors %}
+        <div class="container-fluid" >
+                <div class="row" >
+                    <div class="col-sm-6" >
+                        <h3>{{ data['name'] }}</h3>
+                        {{ data['designation'] }}<br/>
+                        <br/>
+                        <h5>
+                        {% if data['speciality']=='Cardiology' %}
+                         স্পেশালিটি: Cardiology(হৃদরোগ)
+                        {% endif %}
+                        {% if data['speciality']=='Dentistry' %}
+                         স্পেশালিটি: Dentistry(দাঁত)
+                        {% endif %}
+                        {% if data['speciality']=='Dermatology' %}
+                         স্পেশালিটি: Dermatology(চর্ম)
+                        {% endif %}
+                        {% if data['speciality']=='Endocrinology' %}
+                         স্পেশালিটি: Endocrinology(ডায়াবেটিসওহরমোন)
+                        {% endif %}
+                        {% if data['speciality']=='ENT' %}
+                         স্পেশালিটি: ENT(নাক,কান,গলা)
+                        {% endif %}
+                        {% if data['speciality']=='Gastroenterology' %}
+                         স্পেশালিটি: Gastroenterology(পাকস্থলী)
+                        {% endif %}
+                        {% if data['speciality']=='GeneralPhysician' %}
+                         স্পেশালিটি: GeneralPhysician
+                        {% endif %}
+                        {% if data['speciality']=='GeneralSurgery' %}
+                         স্পেশালিটি: GeneralSurgery
+                        {% endif %}
+                        {% if data['speciality']=='Gynaecology' %}
+                         স্পেশালিটি: Gynaecology(স্ত্রীরোগ)
+                        {% endif %}
+                        {% if data['speciality']=='Haematology' %}
+                         স্পেশালিটি: Haematology(রক্ত)
+                        {% endif %}
+                        {% if data['speciality']=='Hepatology' %}
+                         স্পেশালিটি: Hepatology(লিভার)
+                        {% endif %}
+                        {% if data['speciality']=='InfectiousDiseases' %}
+                         স্পেশালিটি: InfectiousDiseases
+                        {% endif %}
+                        {% if data['speciality']=='Infertility' %}
+                         স্পেশালিটি: Infertility
+                        {% endif %}
+                        {% if data['speciality']=='Medicine' %}
+                         স্পেশালিটি: Medicine(মেডিসিন)
+                        {% endif %}
+                        {% if data['speciality']=='Nephrology' %}
+                         স্পেশালিটি: Nephrology(কিডনি)
+                        {% endif %}
+                        {% if data['speciality']=='Neuromedicine' %}
+                         স্পেশালিটি: Neuromedicine
+                        {% endif %}
+                        {% if data['speciality']=='Neurosurgery' %}
+                         স্পেশালিটি: Neurosurgery
+                        {% endif %}
+                        {% if data['speciality']=='Nutritionist' %}
+                         স্পেশালিটি: Nutritionist(পুষ্টি)
+                        {% endif %}
+                        {% if data['speciality']=='Oncology' %}
+                         স্পেশালিটি: Oncology(cancer)
+                        {% endif %}
+                        {% if data['speciality']=='Ophthalmology' %}
+                         স্পেশালিটি: Ophthalmology(চক্ষু)
+                        {% endif %}
+                        {% if data['speciality']=='Orthopaedics' %}
+                         স্পেশালিটি: Orthopaedics(হাড়)
+                        {% endif %}
+                        {% if data['speciality']=='Paediatrics' %}
+                         স্পেশালিটি: Paediatrics(শিশুরোগ)
+                        {% endif %}
+                        {% if data['speciality']=='PainManagement' %}
+                         স্পেশালিটি: PainManagement
+                        {% endif %}
+                        {% if data['speciality']=='PhysicalMedicine' %}
+                         স্পেশালিটি: PhysicalMedicine
+                        {% endif %}
+                        {% if data['speciality']=='Physiotherapy' %}
+                         স্পেশালিটি: Physiotherapy
+                        {% endif %}
+                        {% if data['speciality']=='PlasticSurgery' %}
+                         স্পেশালিটি: PlasticSurgery
+                        {% endif %}
+                        {% if data['speciality']=='Psychiatry' %}
+                         স্পেশালিটি: Psychiatry(মনোরোগ)
+                        {% endif %}
+                        {% if data['speciality']=='SexSpecialist' %}
+                         স্পেশালিটি: SexSpecialist(যৌন)
+                        {% endif %}
+                        {% if data['speciality']=='Urology' %}
+                         স্পেশালিটি: Urology
+                        {% endif %}
+                        {% if data['speciality']=='Other' %}
+                         স্পেশালিটি: Other
+                        {% endif %}
+                        </h5>
+                    </div>
+                    <div class="col-sm-6">
+
+                        <span style="font-size: xx-large;font-weight: bold">ফিস: </span>
+                        <span style="font-size: xx-large;color: #1e4482">
+                            {{ data['fee'] }}
+                        </span><br/><br/>
+                    <a href="/doctor/view-profile/{{ data['_id'] }}">
+                    <BUTTON type="button" class="btn btn-primary">View Profile</BUTTON>
+                    </a>
+                    </div>
+                </div>
+        </div>
+        <hr/>
+
+    {% endfor %}
+        </div>
+    </div>
+</div>
+</body>
+<footer> {% include "footer.html" %}</footer>
+
+</html>

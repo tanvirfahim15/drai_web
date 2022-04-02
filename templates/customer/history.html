@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      {% include "nav.html" %}
+   </head>
+   <body>
+      <div align="center">
+          <br/>
+          <br/>
+<div align="right" style="width: 60%;">
+            <a class="btn btn-primary btn-sm" href="/uploads/{{mobile}}" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Uploads</a>
+            </div>
+         <br/>
+         <form class="d-flex mt-2 mb-2" style="width: 60%;">
+            <input id="searchtext" onkeyup="search()" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="button" onclick="search()"><i class="fa fa-search" aria-hidden="true" ></i></button>
+            <br>
+         </form>
+         {% if prescriptions|length>0 %}
+          <div style="width:60%" id="lists">
+          {% for obj in prescriptions %}
+                    <a href="/prescription/{{ obj['prescriptionid'] }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Patient Name: {{ obj['name'] }}</h5>
+                            <small class="text-muted">ID: {{ obj['prescriptionid'] }}</small>
+                        </div>
+                        <div align="left" style="width: 100%;">
+                            <p class="mb-1">Issued Date: {{ obj['date'] }}</p>
+                            <p class="mb-1">Mobile: {{ obj['mobile'] }}</p>
+                            <p class="mb-1">Doctor: {{ obj['doctor'] }}</p>
+                        </div>
+
+                    </a>
+          {% endfor %}</div>
+         {% else %}
+         <br/>
+         <br/>
+         <br/>
+         <span style="font-size: xx-large;color: #cccccc;font-weight: bolder">No prescriptions was found</span>
+         <br/>
+         <br/>
+         <br/>
+         {% endif %}
+      </div>
+      <footer> {% include "footer.html" %}</footer>
+   </body>
+</html>
+
+<script>
+    var prescription_list = [{% for obj in prescriptions %} { name: "{{ obj['name'] }}", id: "{{ obj['prescriptionid'] }}", date: "{{ obj['date'] }}", mobile: "{{ obj['mobile'] }}" }, {% endfor %}];
+
+    console.log(prescription_list);
+
+    function search() {
+        var text = document.getElementById("searchtext").value.toLowerCase();
+        temparray = [];
+        for (var i = 0; i < prescription_list.length; i++) {
+            var prescription = prescription_list[i];
+            if (prescription['name'].toLowerCase().startsWith(text) || prescription['id'].startsWith(text) || prescription['mobile'].startsWith(text) || prescription['date'].startsWith(text)) {
+                temparray.push(prescription);
+            }
+
+        }
+        var globalstring = '';
+        for (var i = 0; i < temparray.length; i++) {
+            var str = '<a href="/prescription/' + temparray[i]['id'] + '" class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Patient Name: ' + temparray[i]['name'] + '</h5><small class="text-muted">ID: ' + temparray[i]['id'] + '</small></div><div align="left" style="width: 100%;"><p class="mb-1">Issued Date: ' + temparray[i]['date'] + '</p><p class="mb-1">Mobile: ' + temparray[i]['mobile'] + '</p></div></a>';
+            globalstring += str;
+        }
+        document.getElementById("lists").innerHTML = globalstring;
+        console.log(temparray);
+    };
+</script>
